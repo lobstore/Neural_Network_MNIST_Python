@@ -55,13 +55,26 @@ for record in test_data_list:
     inputs = (numpy.asfarray(all_values[1:]) / 255.0 * 0.99) + 0.01
     # query the network
 
-    outputs = n.query(inputs)
+    outputs = n.forward(inputs)
 
-    #outputs = n.forward(inputs)
 
     print(outputs)
     print("\n Correct is " + str(correct_label) + "\n")
     # the index of the highest value corresponds to the label
+    '''
+    m, label = outputs.max(1)
+    # append correct or incorrect to list
+    # need to extract from pytorch tensor via numpy to compare to python integer
+    if (label == correct_label):
+        # network's answer matches correct answer, add 1 to scorecard
+        scorecard.append(1)
+    else:
+        # network's answer doesn't match correct answer, add 0 to scorecard
+        scorecard.append(0)
+        pass
+    '''
+   
+    
     label = numpy.argmax(outputs)
     # append correct or incorrect to list
 
@@ -77,7 +90,7 @@ for record in test_data_list:
 # calculate the performance score, the fraction of correct answers
 scorecard_array = numpy.asarray(scorecard)
 print("performance = ", scorecard_array.sum() / scorecard_array.size)
-
+'''
 # run the network backwards, given a label, see what image it produces
 
 # label to test
@@ -89,8 +102,10 @@ targets[label] = 0.99
 print(targets)
 
 # get image data
+
 image_data = n.backquery(targets)
 
 # plot image data
 plt.imshow(image_data.reshape(28, 28), cmap='Greys', interpolation='None')
 plt.show()
+'''

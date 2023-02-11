@@ -38,7 +38,7 @@ class NeuralNetwork(nn.Module):
     def forward(self, inputs_list):
         # convert list to a 2-D FloatTensor then wrap in Variable 
         # also shift to GPU, remove .cuda. if not desired
-        inputs = Variable(torch.cuda.FloatTensor(inputs_list).view(1, self.inodes))
+        inputs = Variable(torch.FloatTensor(inputs_list).view(1, self.inodes))
         
         # combine input layer signals into hidden layer
         hidden_inputs = self.linear_ih(inputs)
@@ -59,7 +59,7 @@ class NeuralNetwork(nn.Module):
 
         # create a Variable out of the target vector, doesn't need gradients calculated
         # also shift to GPU, remove .cuda. if not desired
-        target_variable = Variable(torch.cuda.FloatTensor(targets_list).view(1, self.onodes), requires_grad=False)
+        target_variable = Variable(torch.FloatTensor(targets_list).view(1, self.onodes), requires_grad=False)
         
         # calculate error
         loss = self.error_function(output, target_variable)
@@ -73,6 +73,7 @@ class NeuralNetwork(nn.Module):
 
     pass
 '''
+#Native python network
 
 # neural network class definition
 class NeuralNetwork:
@@ -133,7 +134,7 @@ class NeuralNetwork:
 
     
     # query the neural network
-    def query(self, inputs_list):
+    def forward(self, inputs_list):
         # convert inputs list to 2d array
         inputs = numpy.array(inputs_list, ndmin=2).T
         
@@ -181,3 +182,4 @@ class NeuralNetwork:
         inputs += 0.01
         
         return inputs
+ 
